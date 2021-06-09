@@ -1,0 +1,89 @@
+{% extends 'base_with_nav.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block head %}
+<style>
+.block-1 {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+.block-1_text {
+    color: var(--text-color-lite);
+    font-size: 16px;
+}
+.block-card_text {
+    font-size: 17px;
+    line-height: 30px;
+    text-align: center;
+    margin: 0px;
+    margin-top: 20px;
+}
+.block-5_row {
+    margin-top: 50px;
+}
+.block-5_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.block-5_title {
+    margin-bottom: 50px;
+}
+.block-5_btn {
+    margin-top: 50px;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row block-1">
+    <div class="col-6">
+        <h1>Создавайте и просматривайте инфографику произведений литературы разных жанров</h1>
+        <p class="block-1_text">Ищите книги по описанию, жанру и рейтингу. Дополняйте базу данных своими рекомендациями и наслаждайтесь чтением вместе!</p>
+        <a href="{% url 'login' %}" class="btn btn_red">Начать сейчас</a>
+    </div>
+    <div class="col">
+        <img src="/static/images/index-1.svg" style="width: 100%;">
+    </div>
+</div>
+
+<div class="row">
+    <div class="offset-1 col-4">
+        <div class="card">
+            <img src="/static/images/index-2.svg" style="width: 100%;">
+            <p class="block-card_text">Вам нравится читать новых авторов, но, к сожалению, о них знают не многие?</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="offset-7 col-4">
+        <div class="card">
+            <img src="/static/images/index-3.svg" style="width: 100%;">
+            <p class="block-card_text">Сложно найти истории, подобные прочитанным?</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="offset-1 col-4">
+        <div class="card">
+            <img src="/static/images/index-4.svg" style="width: 100%;">
+            <p class="block-card_text">Хотите узнать больше по данной тематике?</p>
+        </div>
+    </div>
+</div>
+
+<div class="row block-5_row">
+    <div class="offset-3 col-6 block-5_content">
+        <h2 class="block-5_title">Graphbooks — наслаждайтесь чтением вместе!</h2>
+        <img src="/static/images/index-5.svg" style="width: 100%;">
+
+        <a href="{% url 'common_graph' %}" class="block-5_btn btn btn_red">Перейти к интерактивной карте</a>
+    </div>
+</div>
+
+{% endblock %}

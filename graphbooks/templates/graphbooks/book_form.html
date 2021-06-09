@@ -1,0 +1,56 @@
+{% csrf_token %}
+
+<div class="row">
+    <div class="col">
+        <div class="input-field">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-field">
+            {{ form.primary_genre.label_tag }}
+            {{ form.primary_genre }}
+            {{ form.primary_genre.errors }}
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="input-field">
+            {{ form.rating.label_tag }}
+            {{ form.rating }}
+            {{ form.rating.errors }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="input-field">
+            {{ form.note.label_tag }}
+            {{ form.note }}
+            {{ form.note.errors }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="input-field">
+            {{ form.similar.label_tag }}
+            {{ form.similar }}
+            {{ form.similar.errors }}
+        </div>
+    </div>
+</div>
+
+{{ form.non_field_errors }}
+
+<div class="row">
+    <div class="col">
+        {% if form.instance.pk == None %}
+        <button class="btn btn_blue" value="save">Добавить</button>
+        {% else %}
+        <button class="btn btn_blue" value="save">Сохранить</button>
+        <button class="btn btn_red" id="btn-remove-book" value="remove">Удалить</button>
+        {% endif %}
+    </div>
+</div>

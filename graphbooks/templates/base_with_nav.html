@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="page-wrapper">
+
+    <nav>
+        <div class="container">
+            <div class="nav">
+                <a href="{% url 'index' %}" class="nav__logo"><span style="color:var(--brand-color);">Graph</span>books</a>
+                <ul class="nav__menu">
+                    <li class="nav__menu-item"><a href="{% url 'common_graph' %}" class="nav__menu-link">Интерактивная карта</a></li>
+                    <li class="nav__menu-item"><a href="{% url 'about' %}" class="nav__menu-link">О проекте</a></li>
+                </ul>
+
+                <div class="nav__profile">
+                    {% if user.is_authenticated %}
+                    Hello, <a href="{% url 'profile' %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn_transparent">Войти</a>
+                    <a href="{% url 'registration' %}" class="btn btn_red">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container content-block">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__nav">
+                <a href="{% url 'index' %}" class="footer__logo"><span style="color:var(--brand-color);">Graph</span>books</a>
+                <ul class="footer__menu">
+                    <li class="footer__menu-item"><a href="{% url 'common_graph' %}" class="footer__menu-link">Интерактивная карта</a></li>
+                    <li class="footer__menu-item"><a href="{% url 'about' %}" class="footer__menu-link">О проекте</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+
+<p><b>Название: </b>{{ book.name }}</p>
+<p><b>Рейтинг:</b> {{ book.rating }}</p>
+<p><b>Жанр:</b> {{ book.primary_genre.name }}</p>
+<p><b>Примечание:</b></p>
+<p style="overflow-x:auto;overflow-y:auto;max-height:150px;">{{ book.note }}</p>
+<p><b>Похожие:</b></p>
+<p style="overflow-x:auto;overflow-y:auto;max-height:150px;">
+{% for b in book.similar.all %}
+{% if forloop.first %}{{b.name}}{% else %}, {{b.name}}{% endif %}{% endfor %}
+</p>

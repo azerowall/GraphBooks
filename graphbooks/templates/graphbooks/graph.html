@@ -1,0 +1,113 @@
+{% extends "base_with_nav.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    {% if editable %}
+    <div class="col-3">
+        <div class="card">
+            <div class="toolbar">
+                <button class="btn btn_wide btn_red" id="create-book-form-modal-open">Добавить книгу</button>
+                <a href="{% url 'logout' %}" class="btn btn_wide btn_transparent" id="create-book-form-modal-open">Выйти</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col">
+        <div id="graph" class="graph"></div>
+    </div>
+</div>
+
+{% if editable %}
+<div id="book-form-modal" class="modal-overlay modal-overlay_visible">
+    <div class="modal card">
+        <h3 class="card__title">Книга</h3>
+        <form method="POST" action="" id="book-form"></form>
+    </div>
+</div>
+{% else%}
+<div id="book-info-modal" class="modal-overlay modal-overlay_visible">
+    <div class="modal card">
+        <h3 class="card__title">Информация о книге</h3>
+        <div id="book-info"></div>
+    </div>
+</div>
+{% endif %}
+
+
+<script src="{% static 'js/vis-network.min.js' %}"></script>
+<script>
+
+    const graphEp = '{{ graph_ep }}';
+    const graphContainer = document.getElementById('graph');
+    let graphNetwork = null;
+
+    {% if editable %}
+    const bookForm = document.getElementById('book-form');
+    const bookFormModal = document.getElementById('book-form-modal');
+    {% else %}
+    const bookInfo = document.getElementById('book-info');
+    const bookInfoModal = document.getElementById('book-info-modal');
+    {% endif %}
+
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        graphNetwork = makeGraph(graphContainer);
+        await fetchAndUpdateGraph(graphNetwork, graphEp);
+
+        {% if editable %}
+        bookForm.onsubmit = async function(e) {
+            e.preventDefault();
+            let res = false;
+            if (e.submitter && e.submitter.value == 'remove') {
+                const bookId = bookForm.dataset['bookId'];
+                if (bookId) {
+                    res = await apiCall('/book/?id=' + bookId, 'DELETE');
+                }
+            } else {
+                res = await ajaxFormSend(bookForm);
+            }
+            if (res) {
+                await bookFormDone();
+            }
+        };
+        {% endif %}
+
+        graphNetwork.on('doubleClick', async function(e) {
+            const bookId = e.nodes[0];
+            if (bookId === undefined) return;
+
+            {% if editable %}
+            bookForm.dataset['bookId'] = bookId;
+            await ajaxFormGet(bookForm, '/book/?form&id=' + bookId);
+            modalOpen(bookFormModal);
+            {% else %}
+            await fetchElement(bookInfo, '/book/?info&id=' + bookId);
+            modalOpen(bookInfoModal);
+            {% endif %}
+        });
+
+        {% if editable %}
+        document.getElementById('create-book-form-modal-open').onclick = (e) => {
+            ajaxFormGet(bookForm, '/book/?form').then(() => {
+                modalOpen(bookFormModal);
+            });
+        };
+        {% endif %}
+
+    });
+
+    {% if editable %}
+    async function bookFormDone() {
+        modalClose(bookFormModal);
+
+        await fetchAndUpdateGraph(graphNetwork, graphEp);
+    }
+    {% endif %}
+
+</script>
+
+{% endblock %}
